@@ -95,6 +95,15 @@ export interface IUserDoc extends Document {
 }
 
 
+export interface IAdminDoc extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordType: PasswordType; // encrypt this data
+  userType: UserType;
+}
+
 export interface ILoginType {
   ip: string;
   deviceType: string;
