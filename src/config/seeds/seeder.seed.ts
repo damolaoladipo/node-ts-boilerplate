@@ -1,69 +1,24 @@
-import fs from "fs";
-import logger from "../../utils/logger.util";
-import Permission from "../../models/Permission.model";
-import asyncHandler from "../../middlewares/async.mdw";
-import Role from "../../models/Role.model";
-import { UserType } from "../../utils/enums.util";
-import PermissionService from "../../services/permission.service";
+import seedUsers from "./user.seed";
+import seedRoles from "./role.seed";
+import seedPermissions from "./permission.seed";
 
 
 /**
- * @description Reads and parses the permissions data from JSON file
- * @type {Object} permissionsData - Contains array of permission objects
- */
-const permissionsData = JSON.parse(
-  fs.readFileSync(
-    `${__dirname.split("config")[0]}_data/permissions.json`,
-    "utf-8"
-  )
-);
-
-/**
- * @description Seeds the permissions collection in the database
+ * @description Seeds all collections in the database in the correct order:
+ * 1. Users
+ * 2. Roles
+ * 3. Permissions
  * @async
- * @function seedPermissions
+ * @function seedData
  * @returns {Promise<void>}
- * @throws {Error} If there's an error reading the file or inserting data
+ * @throws {Error} If any of the seeding operations fail
  */
-const seedPermissions = asyncHandler(async () => {
-  const permissions = await Permission.countDocuments();
+const seedData = async () => {
+    
+    await seedRoles();
+    await seedPermissions();
+    await seedUsers();
 
-  if (permissions === 0) {
-    const seed = await Permission.insertMany(permissionsData);
+}
 
-    if (seed) {
-      logger.log({
-        data: `${seed.length} permissions seeded successfully`,
-        type: "info",
-      });
-    }
-
-    const permissionsMap = new Map(seed.map((p) => [p.action, p._id]));
-
-    const roles = await Role.find({});
-
-    for (const role of roles) {
-      const permissionActions =
-        PermissionService.rolePermissionMap[role.name as UserType] || [];
-
-      const permissionIds = permissionActions
-        .map((action) => permissionsMap.get(action))
-        .filter((id) => id);
-
-      role.permissions = permissionIds;
-      await role.save();
-    }
-
-    logger.log({
-      data: "Permissions assigned to roles successfully",
-      type: "info",
-    });
-  } else {
-    logger.log({
-      data: "Permissions already exist, seeding skipped",
-      type: "info",
-    });
-  }
-});
-
-export default seedPermissions;
+export default seedData;
