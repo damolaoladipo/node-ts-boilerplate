@@ -15,7 +15,7 @@ export enum AppChannel {
 
 export enum UserType {
   USER = "user",
-  SUPER = "superadmin",
+  SUPERADMIN = "superadmin",
   ADMIN = "admin",
 }
 

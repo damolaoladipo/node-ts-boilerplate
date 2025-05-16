@@ -120,3 +120,15 @@ export interface ILocationInfo {
   city: string;
   state: string;
 }
+
+export interface IResult<T = any> {
+  error: boolean;
+  message: string;
+  code: number;
+  data: any;
+}
+
+export interface IData {
+  key: string;
+  value: any;
+}
