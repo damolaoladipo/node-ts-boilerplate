@@ -7,7 +7,8 @@ import {
   PasswordType,
   UserType,
 } from "../utils/enums.util";
-import userService from "../services/user.service";
+import UserService from "../services/user.service";
+
 
 
 const UserSchema = new Schema<IUserDoc>(
@@ -122,7 +123,7 @@ UserSchema.set("toJSON", { virtuals: true, getters: true });
 
 UserSchema.pre<IUserDoc>("save", async function (next) {
   if (!this.isModified("password")) return next();
-  await userService.encryptUserPassword(this, this.password);
+  await UserService.encryptUserPassword(this, this.password);
   next();
 });
 
