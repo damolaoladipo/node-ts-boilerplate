@@ -4,7 +4,7 @@ import connectDB from "./config/db.config";
 
 const connect = async () : Promise<void> => {
 
-    await connectDB()
+    // await connectDB()
 }
 
 connect()
