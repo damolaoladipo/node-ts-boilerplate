@@ -59,14 +59,13 @@ export interface IUserDoc extends Document {
   accessTokenExpiry: Date;
 
   isSuper: boolean;
-  isStaff: boolean;
-  isPreacher: boolean;
-  isCreator: boolean;
-  isListener: boolean;
+  isAdmin: boolean;
+  isUser: boolean;
 
   loginInfo: ILoginType;
   lastLogin: string;
   isActive: boolean;
+  isActivated: boolean;
   isDeactivated: boolean;
   loginLimit: number;
   isLocked: boolean;

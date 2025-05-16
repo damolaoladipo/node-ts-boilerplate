@@ -1,24 +1,33 @@
 export enum ENVType {
-    PRODUCTION = 'production',
-    STAGING = 'staging',
-    DEVELOPMENT = 'development'
-    }
+  PRODUCTION = "production",
+  STAGING = "staging",
+  DEVELOPMENT = "development",
+}
 
 export enum AppChannel {
-    WEB = "web",
-    MOBILE = "mobile",
-    DESKTOP = "desktop",
-    TABLET = "tablet",
-    SMART_TV = "smart-tv",
-    WATCH = "watch"
-    }
-    
+  WEB = "web",
+  MOBILE = "mobile",
+  DESKTOP = "desktop",
+  TABLET = "tablet",
+  SMART_TV = "smart-tv",
+  WATCH = "watch",
+}
+
 export enum UserType {
-    USER = "user",
-    SUPER = "superadmin",
-    ADMIN = "admin"
-    }
-    
+  USER = "user",
+  SUPER = "superadmin",
+  ADMIN = "admin",
+}
+
+export enum DbModelsType {
+  USER = "user",
+  ROLE = "role",
+  PERMISSION = "permission",
+  API_KEY = "ApiKey",
+  PLAN = "plan",
+  SUBSCRIPTION = "subscription",
+  TRANSACTION = "transaction",
+}
 
 export enum PasswordType {
   USERGENERATED = "user-generated",
@@ -26,7 +35,6 @@ export enum PasswordType {
   TEMPORARY = "temporary",
   RESET = "reset",
 }
-
 
 export enum OtpType {
   REGISTER = "register",
@@ -36,7 +44,6 @@ export enum OtpType {
   CHANGEPASSWORD = "change-password",
   FORGOTPASSWORD = "forgot-password",
 }
-
 
 export enum VerifyOTP {
   REGISTER = "register",

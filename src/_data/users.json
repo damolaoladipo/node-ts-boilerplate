@@ -12,8 +12,6 @@
     "isSuper": "true",
     "isActivated": "true",
     "isAdmin": "false",
-    "isCreator": "false",
-    "isListener": "false",
     "isUser": "true",
     "isActive": "true"
   }
