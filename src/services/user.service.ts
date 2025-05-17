@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { UAParser } from "ua-parser-js";
 import geoip from "geoip-lite";
-import { IBulkUser, ILogin, IResult, IUserDoc } from "../utils/interface.util";
+import { IBulkUser, IResult, IUserDoc } from "../utils/interface.util";
 import {
   Random,
   UIID,
@@ -10,7 +10,7 @@ import {
   strIncludesEs6,
 } from "@btffamily/pacitude";
 import SystemService from "./system.service";
-import userRepository from "../repositories/user.repository";
+import userRepository from "../repositories/user.reposirtory";
 import { OtpType, UserType } from "../utils/enums.util";
 import {
   LoginDTO,
@@ -25,6 +25,7 @@ import { detectPlatform } from "../utils/helper.util";
 
 import { IPermissionDTO } from "../dtos/system.dto";
 import ErrorResponse from "../utils/error.util";
+import PermissionService from "./permission.service";
 
 class UserService {
   public result: IResult;
@@ -186,18 +187,6 @@ class UserService {
       user = permissionUpdate.data as IUserDoc;
     }
 
-    if (user.userType === UserType.ADMIN) {
-      const listenerProfile = await listenerService.createListener({
-        user: user,
-        type: UserType.ADMIN,
-        email: user.email,
-      });
-      if (listenerProfile.error) {
-        throw new Error(listenerProfile.message);
-      }
-      user = listenerProfile.data.user as IUserDoc;
-    }
-
     await this.encryptUserPassword(user, password);
     await user.save();
 
@@ -245,7 +234,7 @@ class UserService {
    * @name validateLoginCredentials
    * @param data
    */
-  public async validateLoginCredentials(data: ILogin): Promise<IResult> {
+  public async validateLoginCredentials(data: LoginDTO): Promise<IResult> {
     if (!data) {
       this.result.error = true;
       this.result.message = "login credentials are required";
@@ -482,7 +471,7 @@ class UserService {
     user.loginInfo = {
       ip: req.ip?.toString() as string,
       deviceType: userAgent as string,
-      platform: detectPlatform(device.type),
+      platform: detectPlatform(device.type as string) ,
       deviceInfo: {
         manufacturer: device.vendor,
         model: device.model,
@@ -678,7 +667,7 @@ class UserService {
     } else if (
       user &&
       isAdmin === false &&
-      (user.userType === UserType.STAFF ||
+      (user.userType === UserType.ADMIN ||
         user.userType === UserType.SUPERADMIN)
     ) {
       result.error = true;

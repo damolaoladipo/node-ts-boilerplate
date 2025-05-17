@@ -29,7 +29,7 @@ class UserRepository {
     // define filter query
     const query: FilterQuery<IUserDoc> = { _id: id };
 
-    const user = await this.model.findById(query).populate(pop).lean();
+    const user = await this.model.findById(query).populate(pop);
     return user
   }
 
