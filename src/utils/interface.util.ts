@@ -141,3 +141,12 @@ export interface IData {
   key: string;
   value: any;
 }
+export interface IBulkUser {
+  _id: ObjectId | null | string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  phoneCode: string;
+  userType: string;
+}

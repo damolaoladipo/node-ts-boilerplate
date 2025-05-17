@@ -11,7 +11,7 @@ import {
 } from "@btffamily/pacitude";
 import SystemService from "./system.service";
 import userRepository from "../repositories/user.repository";
-import { EOtpType, EUserType } from "../utils/enums.util";
+import { OtpType, UserType } from "../utils/enums.util";
 import {
   LoginDTO,
   MatchEncryptedPasswordDTO,
@@ -21,12 +21,9 @@ import { createUserDTO } from "../dtos/user.dto";
 import User from "../models/User.model";
 import Role from "../models/Role.model";
 import { detectPlatform } from "../utils/helper.util";
-import PermissionService from "./permission.service";
-import listenerService from "./listener.service";
+
+
 import { IPermissionDTO } from "../dtos/system.dto";
-import creatorService from "./creator.service";
-import preacherService from "./preacher.service";
-import staffService from "./staff.service";
 import ErrorResponse from "../utils/error.util";
 
 class UserService {
@@ -46,9 +43,8 @@ class UserService {
    */
   public async validateRegister(data: RegisterUserDTO): Promise<IResult> {
     const allowedUsers = [
-      EUserType.LISTENER,
-      EUserType.CREATOR,
-      EUserType.PREACHER,
+      UserType.ADMIN,
+      UserType.USER
     ];
 
     let result: IResult = { error: false, message: "", code: 200, data: {} };
@@ -190,51 +186,16 @@ class UserService {
       user = permissionUpdate.data as IUserDoc;
     }
 
-    if (user.userType === EUserType.LISTENER) {
+    if (user.userType === UserType.ADMIN) {
       const listenerProfile = await listenerService.createListener({
         user: user,
-        type: EUserType.LISTENER,
+        type: UserType.ADMIN,
         email: user.email,
       });
       if (listenerProfile.error) {
         throw new Error(listenerProfile.message);
       }
       user = listenerProfile.data.user as IUserDoc;
-    }
-
-    if (user.userType === EUserType.CREATOR) {
-      const creatorProfile = await creatorService.createCreatorProfile({
-        user: user,
-        type: EUserType.CREATOR,
-        email: user.email,
-      });
-      if (creatorProfile.error) {
-        throw new Error(creatorProfile.message);
-      }
-      user = creatorProfile.data.user as IUserDoc;
-    }
-
-    if (user.userType === EUserType.PREACHER) {
-      const preacherProfile = await preacherService.createPreacherProfile({
-        user: user,
-        type: EUserType.PREACHER,
-        email: user.email,
-      });
-      if (preacherProfile.error) {
-        throw new Error(preacherProfile.message);
-      }
-      user = preacherProfile.data.user as IUserDoc;
-    }
-
-    if (user.userType === EUserType.STAFF) {
-      const staffProfile = await staffService.createStaff({
-        user: user,
-        email: user.email,
-      });
-      if (staffProfile.error) {
-        throw new Error(staffProfile.message);
-      }
-      user = staffProfile.data.user as IUserDoc;
     }
 
     await this.encryptUserPassword(user, password);
@@ -305,18 +266,15 @@ class UserService {
   }
 
   /**
-   * @name validateUserType
+   * @name validatUserType
    * @param type
    * @returns
    */
-  public async validateUserType(type: string): Promise<boolean> {
+  public async validatUserType(type: string): Promise<boolean> {
     let flag = false;
     const list = [
-      EUserType.USER,
-      EUserType.LISTENER,
-      EUserType.CREATOR,
-      EUserType.PREACHER,
-      EUserType.STAFF,
+      UserType.USER,
+      UserType.ADMIN,
     ];
 
     if (arrayIncludes(list, type)) {
@@ -550,7 +508,7 @@ class UserService {
    */
   public async generateOTPCode(
     user: IUserDoc,
-    type: EOtpType
+    type: OtpType
   ): Promise<string> {
     const gencode = Random.randomNum(6);
     user.Otp = gencode.toString();
@@ -720,8 +678,8 @@ class UserService {
     } else if (
       user &&
       isAdmin === false &&
-      (user.userType === EUserType.STAFF ||
-        user.userType === EUserType.SUPERADMIN)
+      (user.userType === UserType.STAFF ||
+        user.userType === UserType.SUPERADMIN)
     ) {
       result.error = true;
       result.message = `user is not authorized to access this route`;
