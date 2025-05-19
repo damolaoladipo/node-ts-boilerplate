@@ -1,5 +1,5 @@
 import { Document, ObjectId } from "mongoose";
-import { AppChannel, OtpType, PasswordType, UserType } from "./enums.util";
+import { AppChannel, EmailType, OtpType, PasswordType, TransactionsType, UserType } from "./enums.util";
 
 export type Nullable<T> = T | null;
 export interface IRoleDoc extends Document {
@@ -172,3 +172,61 @@ export interface IOptions {
   user: string;
 }
 
+
+export interface ITransactionDoc extends Document {
+  type: TransactionsType;
+  medium: string;
+  resource: string;
+  entity: string;
+  reference: string;
+  currency: string;
+  providerRef: string;
+  providerName: string;
+  description: string;
+  narration: string;
+  amount: number;
+  unitAmount: number; // kobo unit * 100
+  fee: number;
+  unitFee: number; // kobo unit * 100
+  status: string;
+  reason: string;
+  message: string;
+  providerData: Array<Record<string, any>>;
+  metadata: Array<Record<string, any>>;
+  channel: string;
+  slug: string;
+  card: IDebitCard;
+
+  // relationships
+  user: ObjectId | any;
+
+  // timestamps
+  createdAt: string;
+  updatedAt: string;
+  _versions: number;
+  _id: ObjectId;
+  id: ObjectId;
+
+  // functions
+  getAll(): Array<ITransactionDoc>;
+}
+
+export interface IDebitCard {
+  authCode: string; // encrypt this data
+  cardBin: string;
+  cardLast: string;
+  expiryMonth: string;
+  expiryYear: string;
+  cardPan: string; // encrypt this data
+  token: string;
+  provider: string;
+}
+
+export interface IEmailRequest {
+  recipient: string;
+  subject: string;
+  content: any;
+  type: EmailType;
+  template?: string;
+  attachments?: any[];
+}

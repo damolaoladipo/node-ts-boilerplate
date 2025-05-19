@@ -192,10 +192,9 @@ class EmailService {
         
         // Determine login URL and template data based on user type
         const loginUrls = {
-          [UserType.STAFF]: '/staff/login',
-          [UserType.PREACHER]: '/preacher/login',
-          [UserType.CREATOR]: '/creator/login',
-          [UserType.LISTENER]: '/login'
+          [UserType.SUPERADMIN]: 'login',
+          [UserType.ADMIN]: 'login',
+          [UserType.USER]: '/login'
         };
 
         const loginUrl = data.options.loginUrl || 

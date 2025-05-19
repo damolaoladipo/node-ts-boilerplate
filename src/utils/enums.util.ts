@@ -93,3 +93,11 @@ export enum EmailType {
   PRODUCT_UPDATE = 'product_update',
   FEATURE_ANNOUNCEMENT = 'feature_announcement'
 }
+
+export enum TransactionsType {
+  SUBSCRIPTION = "subscription",
+  REFUND = "refund",
+  ONETIME = "onetime",
+  UPGRADE = "upgrade",
+  PAYMENT_METHOD_UPDATE = "payment-method-update"
+}
