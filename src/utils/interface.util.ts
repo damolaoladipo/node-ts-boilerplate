@@ -150,3 +150,17 @@ export interface IBulkUser {
   phoneCode: string;
   userType: string;
 }
+
+export interface ICustomResponse<T> extends Response {
+  customResults?: {
+    success: boolean;
+    count: number;
+    total: number;
+    pagination: {
+      next?: { page: number; limit: number };
+      prev?: { page: number; limit: number };
+    };
+    data: T[];
+  };
+  status: any;
+}
