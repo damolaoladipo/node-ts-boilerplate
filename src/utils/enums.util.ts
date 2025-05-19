@@ -52,3 +52,21 @@ export enum VerifyOTP {
   LOGIN = "login",
   VERIFY = "verify",
 }
+
+
+export enum EmailDriver {
+  SENDGRID = "sendgrid",
+  AWS = "aws",
+  MAILTRAP = "mailtrap",
+}
+
+export enum EmailTemplate {
+  WELCOME = "welcome",
+  USER_INVITE = "user-invite",
+  PASSWORD_RESET = "password-reset",
+  PASSWORD_CHANGED = "password-changed",
+  EMAIL_VERIFICATION = "email-verification",
+  INVITE = "invite",
+  OTP = "otp",
+  VERIFY_EMAIL = "verify-email",
+}
