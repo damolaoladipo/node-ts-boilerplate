@@ -1,10 +1,10 @@
 import { renderFile } from "ejs";
 import appRootUrl from "app-root-path";
 import appRootPath from "app-root-path";
-import { SendEmailDTO, SendgridEmailDataDTO } from "../dtos/email.dto";
+import { SendEmailDTO, SendgridEmailDataDTO } from "../dtos/email.d";
 import sgMail from "@sendgrid/mail";
 import transporter from "../utils/sendgrid.util";
-import { EEmailDriver, EEmailTemplate, EVerifyOTP } from "../utils/enums.util";
+import { EmailDriver, EmailTemplate, VerifyOTP } from "../utils/enums.util";
 import { IResult } from "../utils/interface.util";
 
 const BASE_FOLDER: string = `${appRootPath.path}/src`;
@@ -84,7 +84,7 @@ class OTPService {
 
       // Default values
       let buttonText: string = (options && options.buttonText) || "Verify";
-      let _template = template ? template : EEmailTemplate.VERIFY_EMAIL;
+      let _template = template ? template : EmailTemplate.VERIFY_EMAIL;
       let salute =
         options && options.salute
           ? options.salute
@@ -129,7 +129,7 @@ class OTPService {
       };
 
       // Send email using SendGrid if the driver is sendgrid
-      if (driver === EEmailDriver.SENDGRID) {
+      if (driver === EmailDriver.SENDGRID) {
         await this.sendEmailWithSendgrid(emailContent);
         result.message = `OTP sent successfully to ${emailContent.email}`;
         result.data = emailContent;
@@ -155,23 +155,23 @@ class OTPService {
    * @param {VerifyOTPType} type
    * @returns {string} string
    */
-  private switchOTPTitle(type: EVerifyOTP): string {
+  private switchOTPTitle(type: VerifyOTP): string {
     let result: string;
 
     switch (type) {
-      case EVerifyOTP.REGISTER:
+      case VerifyOTP.REGISTER:
         result = "Verify Your Account";
         break;
-      case EVerifyOTP.LOGIN:
+      case VerifyOTP.LOGIN:
         result = "Verify Your Email";
         break;
-      case EVerifyOTP.CHANGE_PASSWORD:
+      case VerifyOTP.CHANGE_PASSWORD:
         result = "Password Change Code";
         break;
-      case EVerifyOTP.PASSWORD_RESET:
+      case VerifyOTP.PASSWORD_RESET:
         result = "Password Reset Code";
         break;
-      case EVerifyOTP.VERIFY:
+      case VerifyOTP.VERIFY:
         result = "Verify your troott account";
         break;
       default:
