@@ -70,3 +70,26 @@ export enum EmailTemplate {
   OTP = "otp",
   VERIFY_EMAIL = "verify-email",
 }
+
+
+export enum EmailPriority {
+  HIGH = 'high',
+  MEDIUM = 'medium',
+  LOW = 'low'
+}
+
+export enum EmailStatus {
+  DELIVERED = 'delivered',
+  FAILED = 'failed',
+  BOUNCED = 'bounced',
+  OPENED = 'opened',
+  CLICKED = 'clicked'
+}
+
+
+export enum EmailType {
+  TRANSACTIONAL = 'transactional',
+  MARKETING = 'marketing',
+  PRODUCT_UPDATE = 'product_update',
+  FEATURE_ANNOUNCEMENT = 'feature_announcement'
+}
