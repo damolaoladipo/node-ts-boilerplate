@@ -164,3 +164,10 @@ export interface ICustomResponse<T> extends Response {
   };
   status: any;
 }
+
+export interface IOptions {
+  host: string;
+  port: number | string;
+  password: string;
+  user: string;
+}
